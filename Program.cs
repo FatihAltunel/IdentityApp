@@ -1,4 +1,5 @@
 using IdentityApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,10 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<IdentityContext>(options =>{
-    var config = builder.Configuration;
-    var connectionString = config.GetConnectionString("database");
+    var config = builder.Configuration; 
+    var connectionString = config.GetConnectionString("database"); 
     options.UseSqlite(connectionString);
 });
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 
 var app = builder.Build();
 
@@ -32,5 +35,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+await IdentitySeedData.IdentityTestUser(app);
 
 app.Run();

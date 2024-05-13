@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+<table class="table table-striped text-center"> 
+    <thead>
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">User Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone Number</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var user in Model){
+        <tr>
+        <th scope="row">@user.Id</th>
+        <td>@user.UserName</td>
+        <td>@user.Email</td>
+        <td>@user.PhoneNumber</td>
+        <td>
+            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="#" class="btn btn-danger">Delete</a>
+        </td>
+        </tr>
+    }
+  </tbody>
+</table>
