@@ -15,7 +15,7 @@ namespace IdentityApp.Models
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<IdentityContext>();
-                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
 
                 // Bekleyen migration varsa, bunları uygular
                 if (context.Database.GetPendingMigrations().Any())
@@ -29,7 +29,7 @@ namespace IdentityApp.Models
                 // Eğer kullanıcı bulunamazsa, yeni bir kullanıcı oluşturur
                 if (user == null)
                 {
-                    user = new IdentityUser
+                    user = new AppUser
                     {
                         UserName = "Admin",
                         Email = "admin@123.com",

@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Identity
-@model IEnumerable<IdentityUser>
+@model IEnumerable<AppUser>
 
   <h2>User List</h2>
   <hr>
@@ -18,14 +18,14 @@
   <tbody>
     @foreach(var user in Model){
         <tr>
-        <th scope="row">@user.Id</th>
-        <td>@user.UserName</td>
-        <td>@user.Email</td>
-        <td>@user.PhoneNumber</td>
-        <td>
-            <a href="#" class="btn btn-primary">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </td>
+          <td>@user.Id</td>
+          <td>@user.UserName</td>
+          <td>@user.Email</td>
+          <td>@user.PhoneNumber</td>
+          <td>
+              <a asp-action="Edit" asp-controller="User" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+              <a href="#" class="btn btn-danger">Delete</a>
+          </td>
         </tr>
     }
   </tbody>

@@ -1,3 +1,4 @@
+using IdentityApp.Models;
 using IdentityApp.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +8,9 @@ namespace IdentityApp.Controllers
 {
     public class UserController: Controller{
 
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<AppUser> _userManager;
 
-        public UserController(UserManager<IdentityUser> userManager){
+        public UserController(UserManager<AppUser> userManager){
             _userManager = userManager;
         }
 
@@ -26,7 +27,7 @@ namespace IdentityApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateViewModel model){
             if (ModelState.IsValid){
-                var user = new IdentityUser{
+                var user = new AppUser{
                     UserName = model.UserName,
                     Email = model.Email,
                 };
@@ -43,6 +44,52 @@ namespace IdentityApp.Controllers
                 }
             }
                 return View(model); 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id){
+            if (id == null){
+                return RedirectToAction("Error");
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if(user!=null){
+                return View(new EditViewModel{
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                });
+            }
+
+            return RedirectToAction("Error");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditViewModel model){
+            if (id == null){
+                return RedirectToAction("Index");
+            }
+            if(id!=model.Id){
+                return View(model);
+            }
+            if(ModelState.IsValid){
+                var user = await _userManager.FindByIdAsync(model.Id);
+                if(user!=null){
+                    user.Email = model.Email;
+                    user.UserName = model.UserName;
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if(result.Succeeded){
+                        return RedirectToAction("Index");
+                    }
+                    foreach (IdentityError err in result.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
+                }
+            }
+            return View(model);
         }
     }
 }
