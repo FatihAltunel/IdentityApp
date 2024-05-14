@@ -1,6 +1,18 @@
 @using Microsoft.AspNetCore.Identity
 @model IEnumerable<AppUser>
 
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var userName = TempData["UserName"] as string;
+} 
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @userName's @successMessage
+    </div>
+}
+
   <h2>User List</h2>
   <hr>
   <a class="btn btn-primary" asp-action="Create" asp-controller="User">Create User</a>

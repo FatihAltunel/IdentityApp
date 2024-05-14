@@ -80,6 +80,13 @@ namespace IdentityApp.Controllers
                     user.UserName = model.UserName;
                     var result = await _userManager.UpdateAsync(user);
 
+                    if(result.Succeeded && !string.IsNullOrEmpty(model.Password)){
+                        await _userManager.RemovePasswordAsync(user);
+                        await _userManager.AddPasswordAsync(user, model.Password);
+                        TempData["SuccessMessage"] = "Password Successfully Changed!";
+                        TempData["UserName"]=model.UserName;
+                    }
+
                     if(result.Succeeded){
                         return RedirectToAction("Index");
                     }
