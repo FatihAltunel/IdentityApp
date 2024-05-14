@@ -1,0 +1,12 @@
+@model AppUser
+
+<div class="alert alert-danger" role="alert">
+  Dou you want to delete the user <a href="#" class="alert-link">@Model.UserName</a> for permanantly
+  <div style="padding: 15px;">
+    <form asp-action="DeletePost" asp-controller="User" method="post" style="display: block;">
+        <input type="hidden" asp-for="Id">
+        <button type="submit" class="btn btn-danger">Yes, Delete the User @Model.UserName</button>
+        <a class="btn btn-primary" asp-controller="User" asp-action="Index">Back</a>
+    </form>
+  </div>
+</div>

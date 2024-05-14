@@ -63,7 +63,6 @@ namespace IdentityApp.Controllers
             }
 
             return RedirectToAction("Error");
-
         }
         [HttpPost]
         public async Task<IActionResult> Edit(string id, EditViewModel model){
@@ -97,6 +96,31 @@ namespace IdentityApp.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string? id){
+            if (id == null){
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(id);
+            if(user!=null){
+                return View("Delete", user);
+            }
+            else{
+                return View("Error");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(string id){
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            
+            await _userManager.DeleteAsync(user);
+            return RedirectToAction("Index");
         }
     }
 }
