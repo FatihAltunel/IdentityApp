@@ -2,6 +2,7 @@ using IdentityApp.Models;
 using IdentityApp.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace IdentityApp.Controllers
@@ -9,9 +10,11 @@ namespace IdentityApp.Controllers
     public class UserController: Controller{
 
         private UserManager<AppUser> _userManager;
+        private RoleManager<AppRole> _roleManager; 
 
-        public UserController(UserManager<AppUser> userManager){
+        public UserController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager){
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -51,7 +54,7 @@ namespace IdentityApp.Controllers
             if (id == null){
                 return RedirectToAction("Error");
             }
-
+            ViewBag.Roles = await _roleManager.Roles.Select(i=>i.Name).ToListAsync();
             var user = await _userManager.FindByIdAsync(id);
 
             if(user!=null){
@@ -59,6 +62,7 @@ namespace IdentityApp.Controllers
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
+                    SelectedRole = await _userManager.GetRolesAsync(user)
                 });
             }
 
@@ -87,6 +91,10 @@ namespace IdentityApp.Controllers
                     }
 
                     if(result.Succeeded){
+                        await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+                        if(model.SelectedRole!=null){
+                            await _userManager.AddToRolesAsync(user, model.SelectedRole);
+                        }
                         return RedirectToAction("Index");
                     }
                     foreach (IdentityError err in result.Errors)

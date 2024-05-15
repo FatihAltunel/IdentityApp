@@ -1,4 +1,4 @@
-@model EditViewModel
+@model EditViewModel 
  
 <h2>Edit User</h2>
 <hr>
@@ -26,6 +26,29 @@
               <label asp-for="ConfirmPassword">Confirm New Password</label>
               <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
             </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          Roles
+        </div>
+        <div class="card-body ">
+          @foreach(var role in @ViewBag.Roles){
+            <div class="form-check">
+              @{
+                  var check = (Model.SelectedRole != null && Model.SelectedRole.Any(i => i == role));
+              }
+              <input 
+              type="checkbox" 
+              class="form-check-input" 
+              name="SelectedRole" 
+              value="@role" 
+              id="@role"
+              @(check ? "checked" : "")
+              >
+              <label for="@role" class="form-check-label">@role</label>
+            </div>
+          }
         </div>
       </div>
           <button type="submit" class="btn btn-primary">Submit</button>

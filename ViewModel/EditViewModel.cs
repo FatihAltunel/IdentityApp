@@ -19,5 +19,7 @@ namespace IdentityApp.ViewModel
         [Compare(nameof(Password),ErrorMessage ="Passwords doesn't match")]
         [NotMapped]
         public string? ConfirmPassword { set; get;} 
+
+        public IList<string>? SelectedRole { get; set; }
     }
 }

@@ -1,0 +1,12 @@
+@model AppRole
+
+<div class="alert alert-danger" role="alert">
+  Dou you want to delete the role <a href="#" class="alert-link">@Model.Name</a> for permanantly
+  <div style="padding: 15px;">
+    <form asp-action="DeletePost" asp-controller="Role" method="post" style="display: block;">
+        <input type="hidden" asp-for="Id">
+        <button type="submit" class="btn btn-danger">Yes, Delete the User @Model.Name</button>
+        <a class="btn btn-primary" asp-controller="Role" asp-action="Index">Back</a>
+    </form>
+  </div>
+</div>
