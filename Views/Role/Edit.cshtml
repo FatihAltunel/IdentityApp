@@ -1,0 +1,56 @@
+@model AppRole
+@{
+  var usersInRole = ViewBag.Users as List<AppUser>;
+}
+
+<h2>Edit Role</h2>
+<hr>
+
+<form asp-controller="Role" asp-action="Edit" method="post" style="margin-bottom:10px;">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group mb-3">
+        <label asp-for="Name">Role Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter Role Name">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a asp-action="Index" class="btn btn-danger">Back</a>
+</form>
+
+  <h2>Users in This Role</h2>
+  <hr>
+
+<table class="table table-striped text-center"> 
+    <thead>
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">User Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone Number</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(usersInRole!=null){
+      if(usersInRole.Count()==0){
+        <div class="alert alert-danger" role="alert">
+          There is not any user for this role!
+        </div>
+      }
+    @foreach(var user in usersInRole){
+        <tr>
+          <td>@user.Id</td>
+          <td>@user.UserName</td>
+          <td>@user.Email</td>
+          <td>@user.PhoneNumber</td>
+          <td>
+              <a asp-action="Edit" asp-controller="User" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+          </td>
+        </tr>
+      }
+    }else{
+      <div class="alert alert-danger" role="alert">
+          usersInRole is NULL!
+        </div>
+    }
+  </tbody>
+</table>
