@@ -15,7 +15,11 @@
 
   <h2>User List</h2>
   <hr>
-  <a class="btn btn-primary" asp-action="Create" asp-controller="User">Create User</a>
+  
+  @{if(User.IsInRole("King")){
+    <a class="btn btn-primary" asp-action="Create" asp-controller="User">Create User</a>
+  }}
+  
 
 <table class="table table-striped text-center"> 
     <thead>

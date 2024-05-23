@@ -18,6 +18,9 @@ namespace IdentityApp.Controllers
         }
 
         public IActionResult Create(){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             return View();
         }
         [HttpPost]
@@ -39,6 +42,9 @@ namespace IdentityApp.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> Delete(string? id){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             if (id == null){
                 return View("Error");
             }
@@ -63,6 +69,9 @@ namespace IdentityApp.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> Edit (string? id){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             if(id==null){return View("Error");}
             var role = await _roleManeger.FindByIdAsync(id);
             if(role==null){return View("Error");}

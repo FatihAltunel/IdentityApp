@@ -1,5 +1,6 @@
 using IdentityApp.Models;
 using IdentityApp.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,12 @@ namespace IdentityApp.Controllers
             return View(_userManager.Users);
         }
 
+
         [HttpGet]
         public IActionResult Create(){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             return View();
         }
 
@@ -51,6 +56,9 @@ namespace IdentityApp.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Edit(string id){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             if (id == null){
                 return RedirectToAction("Error");
             }
@@ -108,6 +116,9 @@ namespace IdentityApp.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Delete(string? id){
+            if(!User.IsInRole("King")){
+                return RedirectToAction("Login","Account");
+            }
             if (id == null){
                 return View("Error");
             }
