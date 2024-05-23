@@ -26,9 +26,17 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 0;
     options.User.RequireUniqueEmail = true;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    options.Lockout.MaxFailedAccessAttempts = 5; //User has max 5 times to login succesfully
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); //If can't the account will be lokced for 5 minutes
 });
 
-
+builder.Services.ConfigureApplicationCookie(options =>{
+    options.LoginPath = "/Account/Login"; //Default
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(14); // Default, If user doesn't login for 14 days the cookie info of the user will be deleted and user will has to login again
+    options.SlidingExpiration = true; //If user logins with in 14 days than the counter set back
+});
 
 var app = builder.Build();
 
@@ -44,6 +52,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication(); // Middleware for authentication
 
 app.UseAuthorization();
 

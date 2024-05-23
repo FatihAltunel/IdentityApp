@@ -1,0 +1,18 @@
+@model LoginViewModel
+
+<form asp-controller="Account" asp-action="Login" method="post">
+  <div class="form-group mb-3">
+    <label asp-for="Email">Email address</label>
+    <input type="email" class="form-control" asp-for="Email" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group mb-3">
+    <label asp-for="Password">Password</label>
+    <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+  </div>
+  <div class="form-group form-check mb-3">
+    <input type="checkbox" class="form-check-input" asp-for="RememberMe">
+    <label class="form-check-label" asp-for="RememberMe">Rememeber Me</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
